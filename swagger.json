@@ -1,0 +1,166 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Aplikasi Pinjaman Online API",
+    "description": "Dokumentasi API untuk aplikasi pinjaman online",
+    "version": "1.0"
+  },
+  "basePath": "/api",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "Pengguna"
+        ],
+        "summary": "Registrasi Pengguna",
+        "description": "Metode ini digunakan untuk mendaftarkan pengguna baru dalam sistem.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "Data pengguna yang akan didaftarkan.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pengguna telah berhasil terdaftar.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Kesalahan validasi data pengguna."
+          },
+          "409": {
+            "description": "Email pengguna sudah terdaftar."
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Pengguna"
+        ],
+        "summary": "Login Pengguna",
+        "description": "Metode ini digunakan untuk mengotentikasi pengguna dan memberi akses ke sistem.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "loginData",
+            "description": "Data login pengguna.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pengguna berhasil login.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "401": {
+            "description": "Autentikasi gagal."
+          }
+        }
+      }
+    },
+    "/loan/{userId}": {
+      "get": {
+        "tags": [
+          "Peminjaman"
+        ],
+        "summary": "Mendapatkan Detail Peminjaman",
+        "description": "Metode ini digunakan untuk mendapatkan detail peminjaman pengguna.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "ID pengguna.",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "description": "Token autentikasi pengguna.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detail peminjaman berhasil ditemukan.",
+            "schema": {
+              "$ref": "#/definitions/Loan"
+            }
+          },
+          "401": {
+            "description": "Autentikasi gagal."
+          },
+          "404": {
+            "description": "Detail peminjaman tidak ditemukan."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "PhoneNumber": {
+          "type": "string"
+        }
+      }
+    },
+    "Loan": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer"
+        },
+        "Amount": {
+          "type": "number"
+        },
+        "Tenor": {
+          "type": "integer"
+        },
+        "Status": {
+          "type": "string"
+        },
+        "UserId": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
